@@ -1,14 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
-
-[CustomEditor(typeof (MapGenerator))]
+[CustomEditor(typeof(MapGenerator))]
 public class MapGeneratorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         MapGenerator mapGenerator = (MapGenerator)target;
-
-
         if (DrawDefaultInspector())
         {
             if (mapGenerator.autoUpdate)
@@ -16,14 +13,9 @@ public class MapGeneratorEditor : Editor
                 mapGenerator.DrawMapInEditor();
             }
         }
-
-        if(GUILayout.Button("Generate Map"))
+        if (GUILayout.Button("Generate Map"))
         {
             mapGenerator.DrawMapInEditor();
         }
     }
-
-
-
-
 }
