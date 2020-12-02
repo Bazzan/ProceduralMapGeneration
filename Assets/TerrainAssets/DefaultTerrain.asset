@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   UseFlatShading: 0
-  UseFallOff: 1
+  UseFallOff: 0
   UniformScale: 2.5
   MeshHeightCurve:
     serializedVersion: 2
