@@ -13,6 +13,8 @@ public class NoiseData : UpdatableData
     public float lacunarity;
     public int seed;
     public Vector2 offset;
+
+#if UNITY_EDITOR
     protected override void OnValidate()
     {
         if (lacunarity < 1)
@@ -21,4 +23,5 @@ public class NoiseData : UpdatableData
             octaves = 0;
         base.OnValidate();
     }
+#endif
 }

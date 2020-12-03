@@ -2,6 +2,14 @@
 using System.Collections;
 public static class MeshGenerator
 {
+    //TODO Cap the distance between to verts to prevent spikes
+    public const int NumberOfSupportedLODs = 5;
+    public const int NumberOfSupporedChunkSizes = 9;
+    public const int NumberOfSupporedFlatShadedChunkSizes = 3;
+
+    public static readonly int[] SupportedChunkSize = { 48, 72, 96, 120, 144, 168, 192, 216, 240 };
+    public static readonly int[] SupportedFlatShadedChunkSize = { 48, 72, 96};
+
     public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, int levelOfDetail, bool useFlatShading)
     {
         AnimationCurve threadHeightCurve = new AnimationCurve(heightCurve.keys);

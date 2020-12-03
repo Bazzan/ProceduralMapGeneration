@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4554386765343020486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4554386765343020507}
+  - component: {fileID: 4554386765343020504}
+  - component: {fileID: 4554386765343020506}
+  - component: {fileID: 4554386765343020505}
+  m_Layer: 0
+  m_Name: mapGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4554386765343020507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4554386765343020486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4554386765343020504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4554386765343020486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf8f00a6120fdd4479ca6beb98d32167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawMode: 1
+  terrainData: {fileID: 11400000, guid: e67806b1f4c8d94428f46f931b0ee9c6, type: 2}
+  noiseData: {fileID: 11400000, guid: a0bb432ecd0a328448ac54909a03c4e4, type: 2}
+  textureData: {fileID: 11400000, guid: 8caa4a4bef639e44aa62a380a3f99bd4, type: 2}
+  TerrainMaterial: {fileID: 2100000, guid: 2e58a5ecbe92eba41b6e20c7fd1bb8ae, type: 2}
+  EditorPreviewDetail: 0
+  autoUpdate: 1
+--- !u!114 &4554386765343020506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4554386765343020486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00be6a9e98197e14c87968f534e74840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapMaterial: {fileID: 2100000, guid: 2e58a5ecbe92eba41b6e20c7fd1bb8ae, type: 2}
+  DetailLevels:
+  - Lod: 0
+    VisibleDistanceThreshold: 0
+    UseForCollider: 0
+  - Lod: 1
+    VisibleDistanceThreshold: 0
+    UseForCollider: 1
+  - Lod: 4
+    VisibleDistanceThreshold: 0
+    UseForCollider: 0
+  ColliderLevelOfDetailIndex: 0
+  Viewer: {fileID: 0}
+--- !u!114 &4554386765343020505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4554386765343020486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde8e51dcbfbb2944a4d651c4917fc84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textureRenderer: {fileID: 0}
+  meshFilter: {fileID: 0}
+  meshRenderer: {fileID: 0}
