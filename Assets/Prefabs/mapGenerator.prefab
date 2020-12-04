@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawMode: 1
-  terrainData: {fileID: 11400000, guid: e67806b1f4c8d94428f46f931b0ee9c6, type: 2}
-  noiseData: {fileID: 11400000, guid: a0bb432ecd0a328448ac54909a03c4e4, type: 2}
+  MeshSettings: {fileID: 11400000, guid: 19f8ced72725cca499d1457a5b3cb67a, type: 2}
+  HeightMapSettings: {fileID: 11400000, guid: 1d9033cd388c5de4eac4a2d5606e344d, type: 2}
   textureData: {fileID: 11400000, guid: 8caa4a4bef639e44aa62a380a3f99bd4, type: 2}
   TerrainMaterial: {fileID: 2100000, guid: 2e58a5ecbe92eba41b6e20c7fd1bb8ae, type: 2}
   EditorPreviewDetail: 0
@@ -67,14 +67,11 @@ MonoBehaviour:
   MapMaterial: {fileID: 2100000, guid: 2e58a5ecbe92eba41b6e20c7fd1bb8ae, type: 2}
   DetailLevels:
   - Lod: 0
-    VisibleDistanceThreshold: 0
-    UseForCollider: 0
+    VisibleDistanceThreshold: 400
   - Lod: 1
-    VisibleDistanceThreshold: 0
-    UseForCollider: 1
+    VisibleDistanceThreshold: 600
   - Lod: 4
-    VisibleDistanceThreshold: 0
-    UseForCollider: 0
+    VisibleDistanceThreshold: 800
   ColliderLevelOfDetailIndex: 0
   Viewer: {fileID: 0}
 --- !u!114 &4554386765343020505
