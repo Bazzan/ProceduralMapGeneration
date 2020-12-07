@@ -12,12 +12,11 @@ public class UpdatableDataEditor : Editor
 
         if (GUILayout.Button("Update"))
         {
-            try
-            {
+
                 data.NotifyOfUpdatedValues();
                 EditorUtility.SetDirty(target);
-            }
-            catch (MissingReferenceException e) { };
+            
+
         }
     }
 
