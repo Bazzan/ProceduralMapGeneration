@@ -2,7 +2,8 @@
 
 public class HeightMapGenerator
 {
-    public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings heightMapSettings, Vector2 sampleCenter)
+    public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings heightMapSettings,
+        Vector2 sampleCenter)
     {
         float[,] values = Noise.GenerateNoiseMap(width, height, heightMapSettings.noiseSettings, sampleCenter);
         AnimationCurve ThreadSafeHeightCurve = new AnimationCurve(heightMapSettings.HeightCurve.keys);
@@ -12,7 +13,7 @@ public class HeightMapGenerator
         {
             for (int j = 0; j < height; j++)
             {
-                values[i, j] *= ThreadSafeHeightCurve.Evaluate(values[i, j] ) * heightMapSettings.HeightMultiplier ;
+                values[i, j] *= ThreadSafeHeightCurve.Evaluate(values[i, j]) * heightMapSettings.HeightMultiplier;
 
                 if (values[i, j] > maxValue)
                     maxValue = values[i, j];
@@ -20,9 +21,11 @@ public class HeightMapGenerator
                     minValue = values[i, j];
             }
         }
+
         return new HeightMap(values, minValue, maxValue);
     }
 }
+
 public struct HeightMap
 {
     public readonly float[,] values;
@@ -34,6 +37,5 @@ public struct HeightMap
         this.values = values;
         this.minValue = minValue;
         this.maxValue = maxValue;
-
     }
 }

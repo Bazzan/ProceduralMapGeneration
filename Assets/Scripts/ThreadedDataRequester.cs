@@ -10,7 +10,8 @@ public class ThreadedDataRequester : MonoBehaviour
 
     private void Awake()
     {
-        instance = FindObjectOfType<ThreadedDataRequester>();
+        if(instance != this)
+            instance = FindObjectOfType<ThreadedDataRequester>();
     }
 
     private void Update()

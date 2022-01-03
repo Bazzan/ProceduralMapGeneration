@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TerrainChunk
 {
@@ -27,7 +25,7 @@ public class TerrainChunk
     private HeightMapSettings heightMapSettings;
     private MeshSettings meshSettings;
 
-    private Transform viewer;
+    private Transform viewer; //player
 
 
     float maxViewDistance;
@@ -74,7 +72,7 @@ public class TerrainChunk
 
 
         ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(
-    meshSettings.numberOfVertsPerLine, meshSettings.numberOfVertsPerLine, heightMapSettings, sampleCenter),
+    meshSettings.numberOfVertsPerRowAndColumn, meshSettings.numberOfVertsPerRowAndColumn, heightMapSettings, sampleCenter),
     OnHeightMapRecived);
     }
     Vector2 viewerPosition
