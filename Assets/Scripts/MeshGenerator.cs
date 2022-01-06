@@ -3,9 +3,6 @@ using System.Collections;
 
 public static class MeshGenerator
 {
-    //TODO Cap the distance between to verts to prevent spikes
-
-
     public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings, int levelOfDetail)
     {
         int skipVertIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
@@ -16,23 +13,22 @@ public static class MeshGenerator
         MeshData meshData = new MeshData(numberOfVertsPerRowAndColumn, skipVertIncrement, meshSettings.UseFlatShading);
 
         int[,] vertexIndicesMap = new int[numberOfVertsPerRowAndColumn, numberOfVertsPerRowAndColumn];
-        //int verticesPerLine = (meshSize - 1) / SkipVertIncrement + 1;
         int meshVertexIndex = 0;
-        int outOfVertexIndex = -1; // a layer of highdetail triangles that stitches togehter with other chunks
+        int outOfVertexIndex = -1; 
 
         for (int y = 0; y < numberOfVertsPerRowAndColumn; y++)
         {
             for (int x = 0; x < numberOfVertsPerRowAndColumn; x++)
             {
                 bool isOutOfMeshVertex = GetIsOutOfMeshVertex(y, numberOfVertsPerRowAndColumn, x);
-                bool isSkippedVertex = GetIsSkippedVertex(x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
+                bool isSkipVertex = GetIsSkipVertex(x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
 
                 if (isOutOfMeshVertex)
                 {
                     vertexIndicesMap[x, y] = outOfVertexIndex;
                     outOfVertexIndex--;
                 }
-                else if (!isSkippedVertex) // creating a 2d Map to easier visualize where the veticies are supposed to be in the world
+                else if (!isSkipVertex) // creating a 2d Map to easier visualize where the veticies are supposed to be in the world
                 {
                     vertexIndicesMap[x, y] = meshVertexIndex;
                     meshVertexIndex++;
@@ -44,10 +40,11 @@ public static class MeshGenerator
         {
             for (int x = 0; x < numberOfVertsPerRowAndColumn; x++)
             {
-                bool isSkippedVertex = GetIsSkippedVertex(x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
+                bool isSkipVertex = GetIsSkipVertex(x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
 
-                if (!isSkippedVertex)
+                if (!isSkipVertex)
                 {
+                    //is a vertex that is used to calculate normals
                     bool isOutOfMeshVertex = GetIsOutOfMeshVertex(y, numberOfVertsPerRowAndColumn, x);
                     //vertex that is on the edge this mesh and connected to MainVert and EdgeConnection verts
                     bool isMeshEdgeVertex = GetIsMeshEdgeVertex(y, numberOfVertsPerRowAndColumn, x, isOutOfMeshVertex);
@@ -72,7 +69,8 @@ public static class MeshGenerator
 
                     if (!createTriangles) continue;
                         
-                    // Creates two triangles
+                    // Creates two triangles 
+                    //currentIncrement is also checking if it is a high or low lod triangle 
                     int currentIncrement = GetCurrentIncrement(
                         isMainVertex, x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
                     int a = vertexIndicesMap[x, y];
@@ -99,20 +97,15 @@ public static class MeshGenerator
 
         if (isEdgeConnectionVertex) // Adjust height to edgeVertices to stitching with other chunks
         {
-            height = AdjustHeightOnEdgeVertices(heightMap, x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
+            height = AdjustHeightOnEdgeConnectionVertices(heightMap, x, numberOfVertsPerRowAndColumn, y, skipVertIncrement);
         }
 
         // adds vertices in meshData
         meshData.AddVertex(new Vector3(vertexPosition2D.x, height, vertexPosition2D.y), UVpercent,
             vertexIndex);
     }
-    private static int GetCurrentIncrement(bool isMainVertex, int x, int numberOfVertsPerRowAndColumn, int y, int skipVertIncrement)
-    {
-        return (isMainVertex && x != numberOfVertsPerRowAndColumn - 3 && y != numberOfVertsPerRowAndColumn - 3)
-            ? skipVertIncrement
-            : 1;
-    }
-    private static float AdjustHeightOnEdgeVertices(float[,] heightMap, int x, int numberOfVertsPerRowAndColumn, int y,
+
+    private static float AdjustHeightOnEdgeConnectionVertices(float[,] heightMap, int x, int numberOfVertsPerRowAndColumn, int y,
         int skipVertIncrement)
     {
         float height;
@@ -131,7 +124,13 @@ public static class MeshGenerator
         return height;
     }
     
-    private static bool GetIsSkippedVertex(int x, int numberOfVertsPerRowAndColumn, int y, int skipVertIncrement)
+    private static int GetCurrentIncrement(bool isMainVertex, int x, int numberOfVertsPerRowAndColumn, int y, int skipVertIncrement)
+    {
+        return (isMainVertex && x != numberOfVertsPerRowAndColumn - 3 && y != numberOfVertsPerRowAndColumn - 3)
+            ? skipVertIncrement
+            : 1;
+    }
+    private static bool GetIsSkipVertex(int x, int numberOfVertsPerRowAndColumn, int y, int skipVertIncrement)
     {
         return x > 2 && x < numberOfVertsPerRowAndColumn - 3 && y > 2 && y < numberOfVertsPerRowAndColumn - 3 &&
                ((x - 2) % skipVertIncrement != 0 || (y - 2) % skipVertIncrement != 0);
@@ -170,13 +169,13 @@ public class MeshData
     private Vector2[] UVs;
 
     private Vector3[]
-        outOfMeshVertices; // Verts that are high LOD and is on the edge of the chunk to stich thogether with other chunks 
+        outOfMeshVertices; // Verts that are used to calculate normals on the edges, not applied in final mesh 
+    private int[] outOfMeshTriangles;
+    private int outOfMeshTriangleIndex;
 
     private Vector3[] bakedNormals;
-    private int[] outOfMeshTriangles;
 
     private int triangleIndex;
-    private int outOfMeshTriangleIndex;
     private bool useFlatShading;
 
     public MeshData(int numberOfVertsPerRowAndColumn, int skipVertexIncrement, bool useFlatShading)
@@ -305,13 +304,7 @@ public class MeshData
         Vector3 sideAC = pointC - pointA;
         return Vector3.Cross(sideAB, sideAC).normalized;
     }
-
-
-
-
-
-
-
+    
     private void FlatShading()
     {
         Vector3[] flatShadedVertices = new Vector3[triangles.Length];

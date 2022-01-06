@@ -976,6 +976,10 @@ PrefabInstance:
       propertyPath: textureSettings
       value: 
       objectReference: {fileID: 11400000, guid: 8caa4a4bef639e44aa62a380a3f99bd4, type: 2}
+    - target: {fileID: 4554386765343020506, guid: f6d6264b60932c84ca5ac309346fe035, type: 3}
+      propertyPath: DetailLevels.Array.data[0].Lod
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4554386765343020507, guid: f6d6264b60932c84ca5ac309346fe035, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

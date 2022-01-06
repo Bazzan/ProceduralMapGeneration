@@ -3,15 +3,27 @@ using UnityEngine;
 using System;
 using System.Threading;
 
-public class ThreadedDataRequester : MonoBehaviour
+public class ThreadedMeshDataHandeler : MonoBehaviour
 {
-    private static ThreadedDataRequester instance;
+    private static ThreadedMeshDataHandeler instance;
     private Queue<ThreadInfo> dataQueue = new Queue<ThreadInfo>();
+
+    private struct ThreadInfo
+    {
+        public readonly Action<object> callback;
+        public readonly object parameter;
+
+        public ThreadInfo(Action<object> callback, object parameter)
+        {
+            this.callback = callback;
+            this.parameter = parameter;
+        }
+    }
 
     private void Awake()
     {
-        if(instance != this)
-            instance = FindObjectOfType<ThreadedDataRequester>();
+        if (instance != this)
+            instance = FindObjectOfType<ThreadedMeshDataHandeler>();
     }
 
     private void Update()
@@ -24,38 +36,20 @@ public class ThreadedDataRequester : MonoBehaviour
                 threadInfo.callback(threadInfo.parameter);
             }
         }
-
     }
 
     public static void RequestData(Func<object> generateData, Action<object> callback)
     {
-        ThreadStart threadStart = delegate
-        {
-            instance.DataThread(generateData, callback);
-        };
+        ThreadStart threadStart = delegate { instance.DataThread(generateData, callback); };
         new Thread(threadStart).Start();
     }
+
     private void DataThread(Func<object> generateData, Action<object> callback)
     {
-
         object data = generateData();
         lock (dataQueue)
         {
             dataQueue.Enqueue(new ThreadInfo(callback, data));
-        }
-    }
-
-
-
-
-    private struct ThreadInfo
-    {
-        public readonly Action<object> callback;
-        public readonly object parameter;
-        public ThreadInfo(Action<object> callback, object parameter)
-        {
-            this.callback = callback;
-            this.parameter = parameter;
         }
     }
 }

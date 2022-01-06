@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public static class Noise
 {
-    public enum NormalizeMode
+    public enum NormalizeType
     {
         Local,
         Global
@@ -43,7 +44,7 @@ public static class Noise
                     float sampleX = (x - halfWidth + octaveOffsets[i].x) / noiseSettings.Scale * frequency;
                     float sampleY = (y - halfHeight + octaveOffsets[i].y) / noiseSettings.Scale * frequency;
 
-                    float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
+                    float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1; 
                     noiseHeight += perlinValue * amplitude;
 
                     amplitude *= noiseSettings.Persistance;
@@ -58,7 +59,7 @@ public static class Noise
 
                 noiseMap[x, y] = noiseHeight;
 
-                if (noiseSettings.NormalizeMode == NormalizeMode.Global) // evening map out to make chuncks match better
+                if (noiseSettings.normalizeType == NormalizeType.Global) // evening map out to make chuncks match better
                 {
                     float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight);
                     noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
@@ -66,7 +67,7 @@ public static class Noise
             }
         }
 
-        if (noiseSettings.NormalizeMode == NormalizeMode.Local)
+        if (noiseSettings.normalizeType == NormalizeType.Local)
         {
             for (int y = 0; y < mapHeight; y++)
             {
@@ -84,7 +85,7 @@ public static class Noise
 [System.Serializable]
 public class NoiseSettings
 {
-    public Noise.NormalizeMode NormalizeMode;
+    [FormerlySerializedAs("NormalizeMode")] public Noise.NormalizeType normalizeType;
 
     public float Scale = 50;
 
